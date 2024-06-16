@@ -1,5 +1,5 @@
 {
-  "name": "@peerless_hero/aliyun-sdk",
+  "name": "@peerless-hero/aliyun-sdk",
   "version": "0.0.1",
   "packageManager": "pnpm@9.1.1",
   "description": "Aliyun sdk for Node.js",
