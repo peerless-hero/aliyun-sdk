@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.0.4
+
+[compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.0.3...v0.0.4)
+
+### 🤖 CI
+
+- 移除changelogithub步骤 ([ebf8647](https://github.com/peerless-hero/aliyun-sdk/commit/ebf8647))
+
+### ❤️ Contributors
+
+- Peerless_hero <peerless_hero@outlook.com>
+
 ## v0.0.3
 
 [compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.0.2...v0.0.3)
