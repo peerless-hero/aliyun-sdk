@@ -9,13 +9,16 @@ export namespace <%- PREFIX %> {
   * `<%- api.info.product %>`可用端点
   */
   export type Endpoint = <% for (let i = 0; i < api.endpoints.length; i++) { -%>'<%- api.endpoints[i].endpoint %>'<% if (i < api.endpoints.length - 1) { -%> | <% } -%><% } -%>
+
   /**
   * `<%- api.info.product %>`客户端配置
   */
   export type ClientConfig = BaseClientConfig & { endpoint?: Endpoint }
 <% for(const name in api.components.schemas) { -%>
+<% if (name!== 'Endpoint') { -%>
 <%- include('doc.ejs', { schema: api.components.schemas[name] }) %>
-type <%- name %> = <%- include('schema.ejs', { schema: api.components.schemas[name] }) %>
+export type <%- name %> = <%- include('schema.ejs', { schema: api.components.schemas[name] }) %>
+<% } -%>
 <% } -%>
 <% for(const action in api.apis) { -%>
   export type <%- action %>Parameters = {
