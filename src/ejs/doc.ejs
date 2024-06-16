@@ -1,0 +1,21 @@
+/**
+<% if (schema.title) { -%>
+ * <%- schema.title.replaceAll('*/', "*\\/") %>
+ *
+<% } else if (schema.description) { -%>
+<% for(const description of schema.description.split('\n')) { -%>
+ * <%- description.replaceAll('*/', "*\\/") %>
+<% } -%>
+ *
+<% } -%>
+<% if (schema.example) { -%>
+ * @example 
+<% for(const example of schema.example.split('\n')) { -%>
+<% if (schema.type==='string') { -%>
+ * '<%- example.replaceAll(' ', ' ').replaceAll('*/','* /') %>'
+<% } else { -%>
+ * <%- example.replaceAll(' ', ' ').replaceAll('*/','* /') %>
+<% } -%>
+<% } -%>
+<% } -%>
+ */

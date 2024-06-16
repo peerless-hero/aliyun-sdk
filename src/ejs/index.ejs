@@ -1,0 +1,5 @@
+<%  for (const { PREFIX, product } of apiList) { -%>
+export { type <%- PREFIX %>, <%- PREFIX %>Client } from './<%- product.code %>/<%- product.defaultVersion %>'
+<% } -%>
+
+export * from './client'

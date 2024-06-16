@@ -1,0 +1,98 @@
+{
+  "name": "@peerless_hero/aliyun-sdk",
+  "version": "0.0.0",
+  "packageManager": "pnpm@9.1.1",
+  "description": "Aliyun sdk for Node.js",
+  "author": "peerless_hero <peelrss_hero@outlook.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/peerless-hero/aliyun-sdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peerless-hero/aliyun-sdk.git"
+  },
+  "bugs": "https://github.com/peerless-hero/aliyun-sdk/issues",
+  "keywords": [
+    "aliyun",
+    "sdk",
+    "node.js"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./versions/*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.mjs",
+      "require": "./dist/*.cjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./dist/index.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "release": "bumpp && npm publish",
+    "dev": "tsx src/index.ts",
+    "import": "tsx test/import.ts",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepare": "simple-git-hooks",
+    "bump:prerelease": "changelogen --bump --release --prerelease --push",
+    "bump:patch": "changelogen --bump --release --patch --push",
+    "bump:minor": "changelogen --bump --release --minor --push",
+    "bump:major": "changelogen --bump --release --major --push"
+  },
+  "dependencies": {
+    "axios": "0.27.2",
+    "consola": "^3.2.3",
+    "fast-querystring": "^1.1.2"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.18.1",
+    "@antfu/ni": "^0.21.12",
+    "@antfu/utils": "^0.7.8",
+    "@types/ejs": "^3.1.5",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.12.12",
+    "@wener/client": "^1.0.19",
+    "bumpp": "^9.4.1",
+    "ejs": "^3.1.10",
+    "eslint": "^9.3.0",
+    "fs-extra": "^11.2.0",
+    "lint-staged": "^15.2.2",
+    "pnpm": "^9.1.1",
+    "rimraf": "^5.0.7",
+    "simple-git-hooks": "^2.11.1",
+    "tsx": "^4.13.2",
+    "typescript": "^5.4.5",
+    "unbuild": "^2.0.0",
+    "vite": "^5.2.11",
+    "vitest": "^1.6.0"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  },
+  "volta": {
+    "node": "20.14.0",
+    "pnpm": "9.3.0"
+  }
+}
