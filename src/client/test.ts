@@ -2,7 +2,7 @@
  * @Author: peerless_hero 121016171@qq.com
  * @Date: 2024-06-18 10:46:16
  * @LastEditors: peerless_hero 121016171@qq.com
- * @LastEditTime: 2024-06-18 11:46:10
+ * @LastEditTime: 2024-06-18 13:03:46
  * @FilePath: \aliyun-sdk\src\client\test.ts
  * @Description: 本地自测方法。鉴于阿里云接口的存在调用费率和频次限制，故没有添加单元测试。
  *
@@ -59,12 +59,18 @@ interface CasListDeploymentJobParameters {
   ShowSize?: number
 }
 
+/**
+ * 数字证书管理服务（原SSL证书）
+ *
+ * @version 2020-04-07
+ * @link https://api.aliyun.com/document/cas/2020-04-07/overview
+ */
 export class CasClient extends BaseClient {
-  static readonly RPC = true
-  static readonly version = '2020-04-07'
+  readonly RPC = true as const
+  readonly version = '2020-04-07' as const
+  endpoint: CasEndpoint = 'cas.aliyuncs.com'
   constructor({ endpoint = 'cas.aliyuncs.com', accessKeyId, accessKeySecret }: CasClientConfig = {}) {
-    super({ endpoint, accessKeyId, accessKeySecret, RPC: true, version: '2020-04-07' })
-    this.setEndpoint(endpoint)
+    super({ endpoint, accessKeyId, accessKeySecret })
   }
 
   /**
