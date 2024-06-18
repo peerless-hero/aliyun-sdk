@@ -13,7 +13,7 @@ export namespace <%- PREFIX %> {
   /**
   * `<%- api.info.product %>`客户端配置
   */
-  export type ClientConfig = BaseClientConfig & { endpoint?: Endpoint }
+  export type ClientConfig = Omit<BaseClientConfig, 'RPC' | 'version'> & { endpoint?: Endpoint }
 <% for(const name in api.components.schemas) { -%>
 <% if (name!== 'Endpoint') { -%>
 <%- include('doc.ejs', { schema: api.components.schemas[name] }) %>
@@ -24,7 +24,7 @@ export type <%- name %> = <%- include('schema.ejs', { schema: api.components.sch
   export type <%- action %>Parameters = {
 <% for (const parameter of filterParameters(api.apis[action].parameters)) { -%>
 <%- include('doc.ejs', { schema: parameter.schema }) %>
-  <%- include('name.ejs', parameter) %>: <%- include('schema.ejs', { schema: parameter.schema }) %>
+  <%- include('name.ejs', parameter) %><% if (!parameter.schema?.required) { %>?<% } %>: <%- include('schema.ejs', { schema: parameter.schema }) %>
 <% } -%>
   }
   export type <%- action %>Data = <%- include('schema.ejs', { schema: api.apis[action].responses['200']?.schema }) %> 
@@ -37,9 +37,8 @@ export type <%- name %> = <%- include('schema.ejs', { schema: api.components.sch
 export class <%- PREFIX %>Client extends BaseClient {
   static readonly RPC = <%- RPC %>
   static readonly version = '<%- api.info.version %>'
-  constructor(config: <%- PREFIX %>.ClientConfig = {}) {
-    super(config)
-    const { endpoint = '<%- api.endpoints[0].endpoint %>' } = config
+  constructor({ endpoint = '<%- api.endpoints[0].endpoint %>', accessKeyId, accessKeySecret }: <%- PREFIX %>.ClientConfig = {}) {
+    super({ endpoint, accessKeyId, accessKeySecret, RPC: <%- RPC %>, version: '<%- api.info.version %>' })
     this.setEndpoint(endpoint)
   }
 
@@ -59,11 +58,10 @@ export class <%- PREFIX %>Client extends BaseClient {
 <% } -%>
    * <%- api.apis[action].summary %>
    */
-  async <%- action %>(parameters: <%- PREFIX %>.<%- action %>Parameters) {
+  async <%- action %>(parameters: <%- PREFIX %>.<%- action %>Parameters<% if(notRequireParameters(api.apis[action].parameters)){ %> = {}<% } %>) {
     const res = await this.fetch(
       '<%- action %>',
       {
-        url: '<%- action %>',
         method: 'POST',
         data: stringify(parameters),
       },
@@ -80,7 +78,7 @@ export class <%- PREFIX %>Client extends BaseClient {
     <%- parameter.name %>: <%- include('schema.ejs', { schema: parameter.schema, space: '    ' }) -%>,
 <% } -%>
 <% } -%>
-    parameters: <%- PREFIX %>.<%- action %>Parameters,
+    parameters<% if(notRequireParameters(api.apis[action].parameters)){ %>?<% } %>: <%- PREFIX %>.<%- action %>Parameters,
   ) {
     const res = await this.fetch(
       '<%- action %>',
