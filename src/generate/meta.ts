@@ -1,8 +1,8 @@
 /*
  * @Author: peerless_hero peerless_hero@outlook.com
  * @Date: 2024-06-09 03:59:35
- * @LastEditors: peerless_hero peerless_hero@outlook.com
- * @LastEditTime: 2024-06-16 23:10:24
+ * @LastEditors: peerless_hero 121016171@qq.com
+ * @LastEditTime: 2024-06-18 16:36:08
  * @FilePath: \aliyun-sdk\src\generate\meta.ts
  * @Description:
  *
@@ -37,7 +37,16 @@ export interface Api {
   deprecated?: boolean
   systemTags: ApiSystemTags
   parameters: ApiParameters[]
-  responses: Record<'200', Partial<Record<'schema', ApiSchema>>>
+  responses: {
+    '200'?: {
+      schema?: ApiSchema
+      headers?: any
+    }
+    '4xx'?: {
+      schema?: ApiSchema
+      headers?: any
+    }
+  }
   staticInfo?: Partial<Record<'returnType', string>>
   responseDemo: string
   title?: string
@@ -69,6 +78,7 @@ export interface ApiSchema {
   properties?: Partial<Record<string, ApiSchema>>
   items?: ApiSchema
   additionalProperties?: ApiSchema
+  $ref?: string
 }
 
 export interface ApiDocs {
