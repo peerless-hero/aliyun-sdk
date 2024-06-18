@@ -1,8 +1,8 @@
 /*
  * @Author: peerless_hero peerless_hero@outlook.com
  * @Date: 2024-06-09 02:51:49
- * @LastEditors: peerless_hero peerless_hero@outlook.com
- * @LastEditTime: 2024-06-15 04:33:24
+ * @LastEditors: peerless_hero 121016171@qq.com
+ * @LastEditTime: 2024-06-18 14:08:34
  * @FilePath: \aliyun-sdk\test\client.test.ts
  * @Description:
  *
@@ -65,8 +65,7 @@ describe('signature', () => {
   const signatureNonce = '3156853299f313e23d1673dc12e1703d'
   const signedHeaders = 'host;x-acs-action;x-acs-content-sha256;x-acs-date;x-acs-signature-nonce;x-acs-version'
   const endpoint = 'ecs.cn-shanghai.aliyuncs.com'
-  const client = new BaseClient({ accessKeyId, accessKeySecret, endpoint })
-  client.version = version
+  const client = new BaseClient({ accessKeyId, accessKeySecret, endpoint, version })
 
   it('should sign the request with correct headers', () => {
     const expectedHeaders = {
