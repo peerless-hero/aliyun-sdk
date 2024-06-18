@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.1.2
+
+[compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.1.1...v0.1.2)
+
+### 🩹 Fixes
+
+- Type ([063e161](https://github.com/peerless-hero/aliyun-sdk/commit/063e161))
+
+### 📖 Documentation
+
+- 安装说明 ([1be0031](https://github.com/peerless-hero/aliyun-sdk/commit/1be0031))
+- 完善安装说明和使用说明 ([5e9af5a](https://github.com/peerless-hero/aliyun-sdk/commit/5e9af5a))
+
+### ❤️ Contributors
+
+- Peerless_hero <121016171@qq.com>
+
 ## v0.1.1
 
 [compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.1.0...v0.1.1)
