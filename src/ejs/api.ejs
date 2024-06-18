@@ -6,13 +6,13 @@ import { BaseClient, type BaseClientConfig } from '../client'
 
 export namespace <%- PREFIX %> {
   /**
-  * `<%- api.info.product %>`可用端点
-  */
+   * `<%- api.info.product %>`可用端点
+   */
   export type Endpoint = <% for (let i = 0; i < api.endpoints.length; i++) { -%>'<%- api.endpoints[i].endpoint %>'<% if (i < api.endpoints.length - 1) { -%> | <% } -%><% } -%>
 
   /**
-  * `<%- api.info.product %>`客户端配置
-  */
+   * `<%- api.info.product %>` 配置
+   */
   export type ClientConfig = Omit<BaseClientConfig, 'RPC' | 'version'> & { endpoint?: Endpoint }
 <% for(const name in api.components.schemas) { -%>
 <% if (name!== 'Endpoint') { -%>
@@ -32,14 +32,16 @@ export type <%- name %> = <%- include('schema.ejs', { schema: api.components.sch
 }
 
 /**
-* `<%- api.info.product %>`客户端
-*/
+ * <%- name %>
+ *
+ * @version <%- api.info.version %>
+ * @link https://api.aliyun.com/document/<%- api.info.product %>/<%- api.info.version %>/overview
+ */
 export class <%- PREFIX %>Client extends BaseClient {
-  static readonly RPC = <%- RPC %>
-  static readonly version = '<%- api.info.version %>'
+  readonly RPC = <%- RPC %> as const
+  readonly version = '<%- api.info.version %>' as const
   constructor({ endpoint = '<%- api.endpoints[0].endpoint %>', accessKeyId, accessKeySecret }: <%- PREFIX %>.ClientConfig = {}) {
-    super({ endpoint, accessKeyId, accessKeySecret, RPC: <%- RPC %>, version: '<%- api.info.version %>' })
-    this.setEndpoint(endpoint)
+    super({ endpoint, accessKeyId, accessKeySecret })
   }
 
   /**

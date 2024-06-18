@@ -2,7 +2,7 @@
  * @Author: peerless_hero peerless_hero@outlook.com
  * @Date: 2024-06-09 04:38:43
  * @LastEditors: peerless_hero 121016171@qq.com
- * @LastEditTime: 2024-06-18 11:38:58
+ * @LastEditTime: 2024-06-18 13:07:16
  * @FilePath: \aliyun-sdk\src\generate\api.ts
  * @Description:
  *
@@ -48,7 +48,6 @@ function filterParameters(parameters: ApiParameters[] = []) {
 function notRequireParameters(parameters: ApiParameters[] = []) {
   for (const parameter of parameters) {
     if (parameter.in === 'query' && parameter.schema?.required) {
-      consola.log(parameter.schema)
       // 存在必填参数
       return false
     }
@@ -71,7 +70,7 @@ export async function renderAPI(product: Product, api: ApiDocs, PREFIX: string) 
   // 例如，product.style可能是'RPC'，而api.info.style却可能是'V3'
   const RPC = api.info.style === 'RPC' || product.style === 'RPC'
   try {
-    const text = await renderFile(ejsPath, { PREFIX, api, RPC, filterParameters, notRequireParameters })
+    const text = await renderFile(ejsPath, { PREFIX, api, RPC, filterParameters, notRequireParameters, name: product.name })
     await fs.outputFile(resolve(`./packages/${api.info.product}/${api.info.version}.ts`), text)
     return product.defaultVersion === api.info.version
   }
