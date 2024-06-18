@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.1.0
+
+[compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.0.4...v0.1.0)
+
+### 🚀 Enhancements
+
+- 本地自测方法 ([3e749bf](https://github.com/peerless-hero/aliyun-sdk/commit/3e749bf))
+
+### 🔥 Performance
+
+- 注释；初始化配置 ([31cb1e9](https://github.com/peerless-hero/aliyun-sdk/commit/31cb1e9))
+- **required:** 所有参数非必填时，parameters不再为必填参数； ([4f50116](https://github.com/peerless-hero/aliyun-sdk/commit/4f50116))
+
+### ❤️ Contributors
+
+- Peerless_hero <121016171@qq.com>
+
 ## v0.0.4
 
 [compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.0.3...v0.0.4)
