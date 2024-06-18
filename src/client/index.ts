@@ -1,8 +1,8 @@
 /*
  * @Author: peerless_hero peerless_hero@outlook.com
  * @Date: 2024-06-08 16:49:48
- * @LastEditors: peerless_hero peerless_hero@outlook.com
- * @LastEditTime: 2024-06-15 04:15:37
+ * @LastEditors: peerless_hero 121016171@qq.com
+ * @LastEditTime: 2024-06-18 11:44:18
  * @FilePath: \aliyun-sdk\src\client\index.ts
  * @Description:
  *
@@ -19,10 +19,22 @@ import type { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders } from 'axi
  * 基础客户端配置
  */
 export interface BaseClientConfig {
+  /**
+   * 阿里云访问密钥ID
+   *
+   * 自动识别并注入环境变量 `ALIYUN_ACCESS_KEY_ID`
+   */
   accessKeyId?: string
+  /**
+   * 阿里云访问密钥
+   *
+   * 自动识别并注入环境变量 `ALIYUN_ACCESS_KEY_SECRET`
+   */
   accessKeySecret?: string
   endpoint?: string
   baseURL?: string
+  version?: string
+  RPC?: boolean
 }
 
 interface GeneratedHeader {
@@ -36,9 +48,7 @@ interface GeneratedHeader {
  * 基础客户端
  */
 export class BaseClient {
-  /** 阿里云访问密钥ID */
   private accessKeyId: string
-  /** 阿里云访问密钥 */
   private accessKeySecret: string
   /**
    * 阿里云服务地址
@@ -49,21 +59,23 @@ export class BaseClient {
   /** 阿里云API请求实例（基于axios） */
   request: AxiosInstance
   /** 阿里云API的版本 */
-  version = ''
+  version: string
   /** 接口风格是否为RPC */
-  private RPC = false
+  RPC: boolean
   constructor(config: BaseClientConfig = {}) {
     const {
       accessKeyId = env.ALIYUN_ACCESS_KEY_ID,
       accessKeySecret = env.ALIYUN_ACCESS_KEY_SECRET,
       endpoint = '',
       baseURL,
+      version = '',
+      RPC = false,
     } = config
     if (!accessKeyId) {
-      throw new Error('accessKeyId is required')
+      throw new Error('Please provide accessKeyId, or set ALIYUN_ACCESS_KEY_ID in environment variables.')
     }
     if (!accessKeySecret) {
-      throw new Error('accessKeySecret is required')
+      throw new Error('Please provide accessKeySecret, or set ALIYUN_ACCESS_KEY_SECRET in environment variables.')
     }
     this.accessKeyId = accessKeyId
     this.accessKeySecret = accessKeySecret
@@ -72,6 +84,8 @@ export class BaseClient {
       baseURL,
       timeout: 10000,
     })
+    this.version = version
+    this.RPC = RPC
   }
 
   canonicalQueryString(queryParam: object = {}) {
