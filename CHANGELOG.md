@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.1.3
+
+[compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.1.2...v0.1.3)
+
+### 🔥 Performance
+
+- 将部分内部方法设置为私有 ([5fc60f7](https://github.com/peerless-hero/aliyun-sdk/commit/5fc60f7))
+
+### 📦 Build
+
+- 暂时跳过oss模块的构建 ([b9d1136](https://github.com/peerless-hero/aliyun-sdk/commit/b9d1136))
+
+### ✅ Tests
+
+- Oss ([6caad0a](https://github.com/peerless-hero/aliyun-sdk/commit/6caad0a))
+
+### ❤️ Contributors
+
+- Peerless_hero <peerless_hero@outlook.com>
+
 ## v0.1.2
 
 [compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.1.1...v0.1.2)
