@@ -51,6 +51,7 @@
     "dev": "tsx src/index.ts",
     "import": "tsx test/import.ts",
     "test": "vitest",
+    "test:client": "tsx src/client/test.ts",
     "typecheck": "tsc --noEmit",
     "prepare": "simple-git-hooks",
     "bump:prerelease": "changelogen --bump --release --prerelease --push",
