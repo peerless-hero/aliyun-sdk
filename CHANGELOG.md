@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.1.4
+
+[compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.1.3...v0.1.4)
+
+### ✅ Tests
+
+- 移除部分测试用例 ([84793aa](https://github.com/peerless-hero/aliyun-sdk/commit/84793aa))
+
+### ❤️ Contributors
+
+- Peerless_hero <peerless_hero@outlook.com>
+
 ## v0.1.3
 
 [compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.1.2...v0.1.3)
