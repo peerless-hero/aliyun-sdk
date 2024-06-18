@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.1.1
+
+[compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.1.0...v0.1.1)
+
+### 🔥 Performance
+
+- Constructor ([b6604ab](https://github.com/peerless-hero/aliyun-sdk/commit/b6604ab))
+- 注释；初始化参数 ([65b6c74](https://github.com/peerless-hero/aliyun-sdk/commit/65b6c74))
+
+### ✅ Tests
+
+- 注释、初始化部分 ([6cf218d](https://github.com/peerless-hero/aliyun-sdk/commit/6cf218d))
+
+### ❤️ Contributors
+
+- Peerless_hero <121016171@qq.com>
+
 ## v0.1.0
 
 [compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.0.4...v0.1.0)
