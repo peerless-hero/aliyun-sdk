@@ -1,8 +1,8 @@
 /*
  * @Author: peerless_hero peerless_hero@outlook.com
  * @Date: 2024-06-08 16:49:48
- * @LastEditors: peerless_hero 121016171@qq.com
- * @LastEditTime: 2024-06-18 13:05:46
+ * @LastEditors: peerless_hero peerless_hero@outlook.com
+ * @LastEditTime: 2024-06-19 00:12:09
  * @FilePath: \aliyun-sdk\src\client\index.ts
  * @Description:
  *
@@ -60,7 +60,7 @@ export class BaseClient {
   protected version: string
   protected RPC: boolean
   /** 阿里云API请求实例（基于axios） */
-  request: AxiosInstance
+  protected request: AxiosInstance
   constructor(config: BaseClientConfig = {}) {
     const {
       accessKeyId = env.ALIYUN_ACCESS_KEY_ID,
@@ -86,7 +86,7 @@ export class BaseClient {
     this.RPC = RPC
   }
 
-  canonicalQueryString(queryParam: object = {}) {
+  private canonicalQueryString(queryParam: object = {}) {
     return Object.entries(queryParam)
       .sort((a, b) => a[0].localeCompare(b[0]))
       .map(([key, value]) => stringify({ [key]: value }))
@@ -96,7 +96,7 @@ export class BaseClient {
   /**
    * 计算HMAC-SHA256签名
    */
-  hmac256(key: string, data: string) {
+  private hmac256(key: string, data: string) {
     const hmac = createHmac('sha256', Buffer.from(key, 'binary'))
     hmac.update(data, 'utf8')
     return hmac.digest('hex').toLowerCase()
@@ -106,13 +106,13 @@ export class BaseClient {
    *
    * 计算SHA256摘要
    */
-  sha256Hex(str: string) {
+  private sha256Hex(str: string) {
     const hash = createHash('sha256')
     const digest = hash.update(str, 'utf8').digest('hex')
     return digest.toLowerCase()
   }
 
-  hashRequestPayload(data?: any) {
+  private hashRequestPayload(data?: any) {
     if (!data) {
       return this.sha256Hex('')
     }
@@ -123,7 +123,7 @@ export class BaseClient {
   /**
    * 获取请求头相关的签名信息
    */
-  signHeaders({ action, data, signatureNonce = randomBytes(16).toString('hex'), date = new Date() }: GeneratedHeader) {
+  private signHeaders({ action, data, signatureNonce = randomBytes(16).toString('hex'), date = new Date() }: GeneratedHeader) {
     const hashedRequestPayload = this.hashRequestPayload(data)
     const headers: AxiosRequestHeaders = {
       'content-type': this.RPC ? 'application/x-www-form-urlencoded' : 'application/json',
@@ -157,6 +157,11 @@ export class BaseClient {
     }
   }
 
+  /**
+   * 根据统一的签名协议，生成签名并发送请求
+   * @param action 接口名称
+   * @param config 请求配置
+   */
   fetch(action: string, config: AxiosRequestConfig) {
     const { method, url = '/', data, params } = config
     /** 签名协议（SignatureAlgorithm） */
