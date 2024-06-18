@@ -1,8 +1,8 @@
 /*
  * @Author: peerless_hero peerless_hero@outlook.com
  * @Date: 2024-06-09 04:38:43
- * @LastEditors: peerless_hero 121016171@qq.com
- * @LastEditTime: 2024-06-18 13:07:16
+ * @LastEditors: peerless_hero peerless_hero@outlook.com
+ * @LastEditTime: 2024-06-19 00:27:31
  * @FilePath: \aliyun-sdk\src\generate\api.ts
  * @Description:
  *
@@ -92,6 +92,10 @@ export async function generateAPI() {
   for (let i = 0; i < products.length; i++) {
     const product = products[i]
     consola.info('Generating', `${i + 1}/${products.length}`)
+    if (product.code === 'Oss') {
+      consola.info(`There is some problem with ${product.code}, skip it.`)
+      continue
+    }
     const apis = await Promise.all(product.versions.map(version => getProductApiDocMeta(product.code, version)))
     const PREFIX = getPrefix(product.code)
     /** 默认版本是否构建成功 */
