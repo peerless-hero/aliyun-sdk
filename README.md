@@ -19,7 +19,8 @@ pnpm add -D @peerless-hero/aliyun-sdk
 
 ```ts
 // 以Cas功能模块为例
-import { type Cas, CasClient } from '@@peerless-hero/aliyun-sdk'
+// 默认导出均为当前API文档描述的默认版本
+import { type Cas, CasClient } from '@peerless-hero/aliyun-sdk'
 
 const cas = new CasClient({
   // 阿里云AccessKey
@@ -35,8 +36,14 @@ result = await cas.DescribeCACertificateList({})
 ```
 
 ```ts
-// 使用特定版本
+// 默认导出均为当前API的默认版本，如需使用特定版本，请以如下方式导入
+// 例如使用2020-06-30版本的Cas模块
 import { type Cas, CasClient } from '@peerless-hero/aliyun-sdk/versions/2020-06-30'
+```
+
+```ts
+// 所有模块均默认使用了文档提供的第一个Endpoint，如需切换，请使用如下方式设置
+cas.setEndpoint('cn-hangzhou') // 设置请求域名
 ```
 
 ## License
