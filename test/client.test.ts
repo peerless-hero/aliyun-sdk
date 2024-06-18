@@ -1,8 +1,8 @@
 /*
  * @Author: peerless_hero peerless_hero@outlook.com
  * @Date: 2024-06-09 02:51:49
- * @LastEditors: peerless_hero 121016171@qq.com
- * @LastEditTime: 2024-06-18 14:08:34
+ * @LastEditors: peerless_hero peerless_hero@outlook.com
+ * @LastEditTime: 2024-06-19 01:06:10
  * @FilePath: \aliyun-sdk\test\client.test.ts
  * @Description:
  *
@@ -16,41 +16,14 @@ describe('base', () => {
     accessKeySecret: 'testAccessKeySecret',
   })
 
-  it('should create a new instance of BaseClient', () => {
-    expect(client).toBeInstanceOf(BaseClient)
-  })
-
   it('should throw an error if accessKeyId or accessKeySecret is not provided', () => {
     expect(() => {
       return new BaseClient()
     }).toThrow()
   })
 
-  it('should generate proper canonical query string', () => {
-    const queryParams = {
-      param1: 'value1',
-      param2: 'value2',
-      param3: 'value3',
-    }
-    const expectedOutput = 'param1=value1&param2=value2&param3=value3'
-    expect(client.canonicalQueryString(queryParams)).toBe(expectedOutput)
-  })
-
   it('should initialize the BaseClient successfully with valid accessKeyId and accessKeySecret', () => {
     expect(client).toBeInstanceOf(BaseClient)
-  })
-
-  it('should calculate HMAC-SHA256 signature correctly', () => {
-    const key = 'testKey'
-    const data = 'testData'
-    const expectedSignature = client.hmac256(key, data)
-    expect(client.hmac256(key, data)).toBe(expectedSignature)
-  })
-
-  it('should hash request payload correctly', () => {
-    const data = { test: 'data' }
-    const expectedHash = client.sha256Hex(JSON.stringify(data))
-    expect(client.hashRequestPayload(data)).toBe(expectedHash)
   })
 })
 

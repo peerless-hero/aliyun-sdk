@@ -123,7 +123,7 @@ export class BaseClient {
   /**
    * 获取请求头相关的签名信息
    */
-  private signHeaders({ action, data, signatureNonce = randomBytes(16).toString('hex'), date = new Date() }: GeneratedHeader) {
+  signHeaders({ action, data, signatureNonce = randomBytes(16).toString('hex'), date = new Date() }: GeneratedHeader) {
     const hashedRequestPayload = this.hashRequestPayload(data)
     const headers: AxiosRequestHeaders = {
       'content-type': this.RPC ? 'application/x-www-form-urlencoded' : 'application/json',
