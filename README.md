@@ -5,7 +5,14 @@
 ## 安装
 
 ```bash
-pnpm i -g @@peerless-hero/aliyun-sdk
+# npm
+npm install --save @peerless-hero/aliyun-sdk
+
+# yarn
+yarn add -D @peerless-hero/aliyun-sdk
+
+# pnpm
+pnpm add -D @peerless-hero/aliyun-sdk
 ```
 
 ## 使用
@@ -22,7 +29,7 @@ const cas = new CasClient({
 })
 // 使用其中的类型
 let result: Cas.DescribeCACertificateListData | null = null
-// 使用
+// 调用方法
 // 所有方法名称均取自官方文档
 result = await cas.DescribeCACertificateList({})
 ```
