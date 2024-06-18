@@ -2,7 +2,7 @@
  * @Author: peerless_hero peerless_hero@outlook.com
  * @Date: 2024-06-08 16:49:48
  * @LastEditors: peerless_hero 121016171@qq.com
- * @LastEditTime: 2024-06-18 11:44:18
+ * @LastEditTime: 2024-06-18 13:05:46
  * @FilePath: \aliyun-sdk\src\client\index.ts
  * @Description:
  *
@@ -22,18 +22,24 @@ export interface BaseClientConfig {
   /**
    * 阿里云访问密钥ID
    *
-   * 自动识别并注入环境变量 `ALIYUN_ACCESS_KEY_ID`
+   * 不提供时，自动识别并注入环境变量 `ALIYUN_ACCESS_KEY_ID`
    */
   accessKeyId?: string
   /**
    * 阿里云访问密钥
    *
-   * 自动识别并注入环境变量 `ALIYUN_ACCESS_KEY_SECRET`
+   * 不提供时，自动识别并注入环境变量 `ALIYUN_ACCESS_KEY_SECRET`
    */
   accessKeySecret?: string
+  /**
+   * 阿里云服务地址
+   *
+   * 即 Endpoint。您可以查阅不同云产品的服务接入地址文档，查阅不同服务区域下的服务地址。
+   */
   endpoint?: string
-  baseURL?: string
+  /** 阿里云API的版本 */
   version?: string
+  /** 接口风格是否为RPC */
   RPC?: boolean
 }
 
@@ -50,24 +56,16 @@ interface GeneratedHeader {
 export class BaseClient {
   private accessKeyId: string
   private accessKeySecret: string
-  /**
-   * 阿里云服务地址
-   *
-   * 即 Endpoint。您可以查阅不同云产品的服务接入地址文档，查阅不同服务区域下的服务地址。
-   */
-  endpoint = ''
+  protected endpoint = ''
+  protected version: string
+  protected RPC: boolean
   /** 阿里云API请求实例（基于axios） */
   request: AxiosInstance
-  /** 阿里云API的版本 */
-  version: string
-  /** 接口风格是否为RPC */
-  RPC: boolean
   constructor(config: BaseClientConfig = {}) {
     const {
       accessKeyId = env.ALIYUN_ACCESS_KEY_ID,
       accessKeySecret = env.ALIYUN_ACCESS_KEY_SECRET,
       endpoint = '',
-      baseURL,
       version = '',
       RPC = false,
     } = config
@@ -81,7 +79,7 @@ export class BaseClient {
     this.accessKeySecret = accessKeySecret
     this.endpoint = endpoint
     this.request = axios.create({
-      baseURL,
+      baseURL: `https://${endpoint}`,
       timeout: 10000,
     })
     this.version = version
