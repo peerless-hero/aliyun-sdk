@@ -1,8 +1,13 @@
 # @peerless-hero/aliyun-sdk
 
-本工具是对基于阿里云OpenAPI封装的SDK工具。由于官方提供的SDK难于使用，且文档过少，因此自己封装了一套工具。
+This tool is an SDK tool encapsulated based on Alibaba Cloud OpenAPI. Because the officially provided SDK is difficult to use and has too few documents, we have encapsulated a set of tools ourselves.
 
-## 安装
+## Documentation
+
+- [中文版](README.zh-cn.md)
+- [English Version](README.md)
+
+## Installation
 
 ```bash
 # npm
@@ -15,36 +20,44 @@ yarn add -D @peerless-hero/aliyun-sdk
 pnpm add -D @peerless-hero/aliyun-sdk
 ```
 
-## 使用
+## Usage
 
 ```ts
-// 以Cas功能模块为例
-// 默认导出均为当前API文档描述的默认版本
+// Taking the Cas function module as an example
+// The default export is the default version described in the current API document
 import { type Cas, CasClient } from '@peerless-hero/aliyun-sdk'
-
+// When initializing the instance, you can not directly pass in the parameters of accessKeyId and accessKeySecret
+// Instead, provide the environment variables ALIYUN_ACCESS_KEY_ID and ALIYUN_ACCESS_KEY_SECRET
+// The SDK will automatically read the environment variables and use them
 const cas = new CasClient({
-  // 阿里云AccessKey
+  // Alibaba Cloud AccessKey
   accessKeyId: 'xxxxxxxxxxxxxxxx',
-  // 阿里云AccessKeySecret
+  // Alibaba Cloud AccessKeySecret
   accessKeySecret: 'xxxxxxxxxxxxxxxx',
 })
-// 使用其中的类型
+// Use the types in it
 let result: Cas.DescribeCACertificateListData | null = null
-// 调用方法
-// 所有方法名称均取自官方文档
+// Call the method
+// All method names are taken from the official documentation
 result = await cas.DescribeCACertificateList({})
 ```
 
 ```ts
-// 默认导出均为当前API的默认版本，如需使用特定版本，请以如下方式导入
-// 例如使用2020-06-30版本的Cas模块
+// The default export is the default version of the current API. If you need to use a specific version, please import it in the following way
+// For example, using the 2020-06-30 version of the Cas module
 import { type Cas, CasClient } from '@peerless-hero/aliyun-sdk/versions/2020-06-30'
 ```
 
 ```ts
-// 所有模块均默认使用了文档提供的第一个Endpoint，如需切换，请使用如下方式设置
-cas.setEndpoint('cn-hangzhou') // 设置请求域名
+// All modules use the first Endpoint provided in the document by default. If you need to switch, please set it in the following way
+cas.setEndpoint('cn-hangzhou') // Set the request domain name
 ```
+
+## Notes
+
+- This tool only supports Node.js environments with a version not less than 17.15.0.
+- This tool does not provide oss-related interfaces because the signature method of these interfaces is quite different from other interfaces. Because Alibaba Cloud oss is compatible with the s3 protocol, it is more recommended to use [s3-sdk](https://github.com/aws/aws-sdk-js-v3) for related operations.
+- This tool's code is automatically generated based on the [product document interface](https://api.aliyun.com/meta/v1/products) publicly provided by Alibaba Cloud and may be missing due to document updates. If there is an update requirement at that time, please raise an [issue](https://github.com/peerless-hero/aliyun-sdk/issues) on github.
 
 ## License
 
