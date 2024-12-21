@@ -1,17 +1,17 @@
+import type { ApiDocs, ApiParameters, Product } from './meta.js'
 /*
  * @Author: peerless_hero peerless_hero@outlook.com
  * @Date: 2024-06-09 04:38:43
  * @LastEditors: peerless_hero peerless_hero@outlook.com
- * @LastEditTime: 2024-06-19 00:27:31
+ * @LastEditTime: 2024-12-22 04:38:24
  * @FilePath: \aliyun-sdk\src\generate\api.ts
  * @Description:
  *
  */
 import { resolve } from 'node:path'
+import consola from 'consola'
 import { renderFile } from 'ejs'
 import fs from 'fs-extra'
-import consola from 'consola'
-import type { ApiDocs, ApiParameters, Product } from './meta.js'
 import { getProductApiDocMeta, getProductsMeta } from './meta.js'
 
 const ejsPath = resolve('./src/ejs/api.ejs')
@@ -93,7 +93,7 @@ export async function generateAPI() {
     const product = products[i]
     consola.info('Generating', `${i + 1}/${products.length}`)
     if (product.code === 'Oss') {
-      consola.info(`There is some problem with ${product.code}, skip it.`)
+      consola.info('This tool does not provide oss-related interfaces because the signature method of these interfaces is quite different from other interfaces. Because Alibaba Cloud oss is compatible with the s3 protocol, it is more recommended to use s3-sdk for related operations.')
       continue
     }
     const apis = await Promise.all(product.versions.map(version => getProductApiDocMeta(product.code, version)))

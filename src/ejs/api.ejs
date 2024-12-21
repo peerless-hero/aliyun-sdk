@@ -49,7 +49,6 @@ export class <%- PREFIX %>Client extends BaseClient {
    */
   setEndpoint(endpoint: <%- PREFIX %>.Endpoint) {
     this.endpoint = endpoint
-    this.request.defaults.baseURL = `https://${endpoint}`
   }
 <% if (RPC) { %>
 <% for(const action in api.apis) { -%>
@@ -60,20 +59,19 @@ export class <%- PREFIX %>Client extends BaseClient {
 <% } -%>
    * <%- api.apis[action].summary %>
    */
-  async <%- action %>(parameters: <%- PREFIX %>.<%- action %>Parameters<% if(notRequireParameters(api.apis[action].parameters)){ %> = {}<% } %>) {
-    const res = await this.fetch(
+  <%- action %>(parameters: <%- PREFIX %>.<%- action %>Parameters<% if(notRequireParameters(api.apis[action].parameters)){ %> = {}<% } %>) {
+    return this.fetch<<%- PREFIX %>.<%- action %>Data>(
       '<%- action %>',
       {
         method: 'POST',
         data: stringify(parameters),
       },
     )
-    return res.data as <%- PREFIX %>.<%- action %>Data
   }
 <% } -%>
 <% } else { -%>
 <% for(const action in api.apis) { -%>
-  async <%- action %>(
+  <%- action %>(
 <% for (const parameter of api.apis[action].parameters) { -%>
 <% if (parameter.in==='path') { -%>
 <%- include('doc.ejs', { schema: parameter.schema, space: '    ' }) %>
@@ -82,7 +80,7 @@ export class <%- PREFIX %>Client extends BaseClient {
 <% } -%>
     parameters<% if(notRequireParameters(api.apis[action].parameters)){ %>?<% } %>: <%- PREFIX %>.<%- action %>Parameters,
   ) {
-    const res = await this.fetch(
+    return this.fetch<<%- PREFIX %>.<%- action %>Data>(
       '<%- action %>',
       {
 <%if (api.apis[action].path?.includes('{')) { -%> 
@@ -98,7 +96,6 @@ export class <%- PREFIX %>Client extends BaseClient {
 <% } -%>
       },
     )
-    return res.data as <%- PREFIX %>.<%- action %>Data
   }
 <% } -%>
 <% } -%>

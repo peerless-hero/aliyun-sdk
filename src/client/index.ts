@@ -1,19 +1,15 @@
+import { createHash, createHmac, randomBytes } from 'node:crypto'
 /*
  * @Author: peerless_hero peerless_hero@outlook.com
  * @Date: 2024-06-08 16:49:48
  * @LastEditors: peerless_hero peerless_hero@outlook.com
- * @LastEditTime: 2024-06-19 00:12:09
+ * @LastEditTime: 2024-12-22 03:46:21
  * @FilePath: \aliyun-sdk\src\client\index.ts
  * @Description:
  *
  */
 import { env } from 'node:process'
-import { Buffer } from 'node:buffer'
-import { createHash, createHmac, randomBytes } from 'node:crypto'
 import { stringify } from 'fast-querystring'
-
-import axios from 'axios'
-import type { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders } from 'axios'
 
 /**
  * 基础客户端配置
@@ -50,17 +46,37 @@ interface GeneratedHeader {
   date?: Date
 }
 
+interface RequestConfig extends RequestInit {
+  /**
+   * 请求路径
+   *
+   * 不包含域名
+   */
+  url?: string
+  /**
+   * 请求方法
+   *
+   * 默认值：`GET`
+   */
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'HEAD' | 'PATCH'
+  /**
+   * 请求体
+   *
+   * 仅当 `method` 不为 `GET` 时有效
+   */
+  data?: any
+  params?: object
+}
+
 /**
  * 基础客户端
  */
 export class BaseClient {
-  private accessKeyId: string
-  private accessKeySecret: string
+  private readonly accessKeyId: string
+  private readonly accessKeySecret: string
   protected endpoint = ''
   protected version: string
   protected RPC: boolean
-  /** 阿里云API请求实例（基于axios） */
-  protected request: AxiosInstance
   constructor(config: BaseClientConfig = {}) {
     const {
       accessKeyId = env.ALIYUN_ACCESS_KEY_ID,
@@ -78,10 +94,6 @@ export class BaseClient {
     this.accessKeyId = accessKeyId
     this.accessKeySecret = accessKeySecret
     this.endpoint = endpoint
-    this.request = axios.create({
-      baseURL: `https://${endpoint}`,
-      timeout: 10000,
-    })
     this.version = version
     this.RPC = RPC
   }
@@ -97,7 +109,7 @@ export class BaseClient {
    * 计算HMAC-SHA256签名
    */
   private hmac256(key: string, data: string) {
-    const hmac = createHmac('sha256', Buffer.from(key, 'binary'))
+    const hmac = createHmac('sha256', key)
     hmac.update(data, 'utf8')
     return hmac.digest('hex').toLowerCase()
   }
@@ -125,7 +137,7 @@ export class BaseClient {
    */
   signHeaders({ action, data, signatureNonce = randomBytes(16).toString('hex'), date = new Date() }: GeneratedHeader) {
     const hashedRequestPayload = this.hashRequestPayload(data)
-    const headers: AxiosRequestHeaders = {
+    const headers: Record<string, string> = {
       'content-type': this.RPC ? 'application/x-www-form-urlencoded' : 'application/json',
       'host': this.endpoint,
       'x-acs-action': action,
@@ -162,7 +174,7 @@ export class BaseClient {
    * @param action 接口名称
    * @param config 请求配置
    */
-  fetch(action: string, config: AxiosRequestConfig) {
+  async fetch<T = object>(action: string, config: RequestConfig) {
     const { method, url = '/', data, params } = config
     /** 签名协议（SignatureAlgorithm） */
     const ALGORITHM = 'ACS3-HMAC-SHA256'
@@ -178,6 +190,17 @@ export class BaseClient {
     const signature = this.hmac256(this.accessKeySecret, stringToSign)
     headers.authorization = `${ALGORITHM} Credential=${this.accessKeyId},SignedHeaders=${signedHeaders},Signature=${signature}`
     config.headers = headers
-    return this.request(config)
+    const fetchConfig: RequestInit = data
+      ? {
+          method,
+          headers,
+          body: this.RPC ? data : JSON.stringify(data),
+        }
+      : {
+          method,
+          headers,
+        }
+    const res = await fetch(`${this.endpoint}${canonicalURI}?${canonicalQueryString}`, fetchConfig)
+    return res.json() as Promise<T>
   }
 }
