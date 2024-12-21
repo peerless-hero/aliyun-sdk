@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.2.0
+
+[compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.1.4...v0.2.0)
+
+### 💅 Refactors
+
+- **client:** 重构基础客户端并替换 HTTP 请求库 ([235856f](https://github.com/peerless-hero/aliyun-sdk/commit/235856f))
+
+### 📖 Documentation
+
+- **README:** 添加中文文档并完善英文文档 ([0643b03](https://github.com/peerless-hero/aliyun-sdk/commit/0643b03))
+
+### 📦 Build
+
+- **deps:** 更新依赖并升级 Node.js 版本 ([4ae5d0f](https://github.com/peerless-hero/aliyun-sdk/commit/4ae5d0f))
+
+### ❤️ Contributors
+
+- Peerless_hero ([@peerless-hero](http://github.com/peerless-hero))
+
 ## v0.1.4
 
 [compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.1.3...v0.1.4)
