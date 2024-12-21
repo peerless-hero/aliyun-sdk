@@ -1,7 +1,7 @@
 {
   "name": "@peerless-hero/aliyun-sdk",
   "version": "0.2.0",
-  "packageManager": "pnpm@9.1.1",
+  "packageManager": "pnpm@9.15.1",
   "description": "Aliyun sdk for Node.js",
   "author": "peerless_hero <peelrss_hero@outlook.com>",
   "license": "MIT",
