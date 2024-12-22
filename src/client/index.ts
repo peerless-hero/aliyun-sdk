@@ -1,13 +1,13 @@
-import { createHash, createHmac, randomBytes } from 'node:crypto'
 /*
  * @Author: peerless_hero peerless_hero@outlook.com
  * @Date: 2024-06-08 16:49:48
  * @LastEditors: peerless_hero peerless_hero@outlook.com
- * @LastEditTime: 2024-12-22 03:46:21
+ * @LastEditTime: 2024-12-22 21:14:09
  * @FilePath: \aliyun-sdk\src\client\index.ts
  * @Description:
  *
  */
+import { createHash, createHmac, randomBytes } from 'node:crypto'
 import { env } from 'node:process'
 import { stringify } from 'fast-querystring'
 
@@ -46,7 +46,11 @@ interface GeneratedHeader {
   date?: Date
 }
 
-interface RequestConfig extends RequestInit {
+interface RequestConfig {
+  /**
+   * 接口名称
+   */
+  action: string
   /**
    * 请求路径
    *
@@ -124,19 +128,26 @@ export class BaseClient {
     return digest.toLowerCase()
   }
 
-  private hashRequestPayload(data?: any) {
-    if (!data) {
+  private hashRequestPayload(body?: any) {
+    if (!body) {
       return this.sha256Hex('')
     }
-    const requestPayload = this.RPC ? data : JSON.stringify(data)
-    return this.sha256Hex(requestPayload)
+    return this.sha256Hex(body)
+  }
+
+  stringifyData(data?: any) {
+    if (!data) {
+      return
+    }
+    return this.RPC ? stringify(data) : JSON.stringify(data)
   }
 
   /**
    * 获取请求头相关的签名信息
    */
   signHeaders({ action, data, signatureNonce = randomBytes(16).toString('hex'), date = new Date() }: GeneratedHeader) {
-    const hashedRequestPayload = this.hashRequestPayload(data)
+    const body = this.stringifyData(data)
+    const hashedRequestPayload = this.hashRequestPayload(body)
     const headers: Record<string, string> = {
       'content-type': this.RPC ? 'application/x-www-form-urlencoded' : 'application/json',
       'host': this.endpoint,
@@ -146,7 +157,7 @@ export class BaseClient {
       'x-acs-signature-nonce': signatureNonce,
       'x-acs-version': this.version,
     }
-    if (!data) {
+    if (!body) {
       // 无请求体时，删除content-type请求头
       delete headers['content-type']
     }
@@ -160,6 +171,7 @@ export class BaseClient {
       return `${result}${key}:${value}\n`
     }, '')
     return {
+      body,
       headers,
       /** 已签名消息头列表 */
       signedHeaders,
@@ -171,17 +183,16 @@ export class BaseClient {
 
   /**
    * 根据统一的签名协议，生成签名并发送请求
-   * @param action 接口名称
    * @param config 请求配置
    */
-  async fetch<T = object>(action: string, config: RequestConfig) {
-    const { method, url = '/', data, params } = config
+  async fetch<T = object>(config: RequestConfig) {
+    const { method, url = '/', params } = config
     /** 签名协议（SignatureAlgorithm） */
     const ALGORITHM = 'ACS3-HMAC-SHA256'
     // 步骤 1：拼接规范请求串
     const canonicalURI = url
     const canonicalQueryString = this.canonicalQueryString(params)
-    const { headers, canonicalHeaders, signedHeaders, hashedRequestPayload } = this.signHeaders({ action, data })
+    const { body, headers, canonicalHeaders, signedHeaders, hashedRequestPayload } = this.signHeaders(config)
     const canonicalRequest = `${method}\n${canonicalURI}\n${canonicalQueryString}\n${canonicalHeaders}\n${signedHeaders}\n${hashedRequestPayload}`
     // 步骤 2：拼接待签名字符串
     const hashedCanonicalRequest = this.sha256Hex(canonicalRequest)
@@ -189,18 +200,18 @@ export class BaseClient {
     // 步骤 3：计算签名
     const signature = this.hmac256(this.accessKeySecret, stringToSign)
     headers.authorization = `${ALGORITHM} Credential=${this.accessKeyId},SignedHeaders=${signedHeaders},Signature=${signature}`
-    config.headers = headers
-    const fetchConfig: RequestInit = data
-      ? {
-          method,
-          headers,
-          body: this.RPC ? data : JSON.stringify(data),
-        }
-      : {
-          method,
-          headers,
-        }
-    const res = await fetch(`${this.endpoint}${canonicalURI}?${canonicalQueryString}`, fetchConfig)
-    return res.json() as Promise<T>
+    const res = await fetch(`https://${this.endpoint}${canonicalURI}?${canonicalQueryString}`, {
+      method,
+      headers,
+      body,
+    })
+    const data: any = await res.json()
+    if (res.status >= 400) {
+      const error = new Error(data.Message)
+      error.name = data.Code
+      error.cause = data
+      return Promise.reject(error)
+    }
+    return data as Promise<T>
   }
 }

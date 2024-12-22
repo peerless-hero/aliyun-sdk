@@ -1,13 +1,12 @@
 /*
  * @Author: peerless_hero 121016171@qq.com
  * @Date: 2024-06-18 10:46:16
- * @LastEditors: peerless_hero 121016171@qq.com
- * @LastEditTime: 2024-06-18 13:03:46
+ * @LastEditors: peerless_hero peerless_hero@outlook.com
+ * @LastEditTime: 2024-12-22 21:15:57
  * @FilePath: \aliyun-sdk\src\client\test.ts
  * @Description: 本地自测方法。鉴于阿里云接口的存在调用费率和频次限制，故没有添加单元测试。
  *
  */
-import { stringify } from 'fast-querystring'
 import consola from 'consola'
 import { BaseClient } from './index'
 
@@ -78,35 +77,28 @@ export class CasClient extends BaseClient {
    */
   setEndpoint(endpoint: CasEndpoint) {
     this.endpoint = endpoint
-    this.request.defaults.baseURL = `https://${endpoint}`
   }
 
   /**
    * 查询任务状态。
    */
   async DescribeDeploymentJobStatus(parameters: CasListDeploymentJobParameters) {
-    const res = await this.fetch(
-      'DescribeDeploymentJobStatus',
-      {
-        method: 'POST',
-        data: stringify(parameters),
-      },
-    )
-    return res.data
+    return this.fetch({
+      action: 'DescribeDeploymentJobStatus',
+      method: 'POST',
+      data: parameters,
+    })
   }
 
   /**
    * 获取部署任务的资源列表。
    */
-  async ListDeploymentJob(parameters: CasListDeploymentJobParameters) {
-    const res = await this.fetch(
-      'ListDeploymentJob',
-      {
-        method: 'POST',
-        data: stringify(parameters),
-      },
-    )
-    return res.data
+  ListDeploymentJob(parameters: CasListDeploymentJobParameters) {
+    return this.fetch({
+      action: 'ListDeploymentJob',
+      method: 'POST',
+      data: parameters,
+    })
   }
 }
 
@@ -121,8 +113,9 @@ async function test() {
     return res
   }
   catch (err: any) {
-    consola.fail(err.config)
-    consola.fail(err.response.data)
+    consola.fail(err.name)
+    consola.fail(err.message)
+    consola.fail(err.cause)
   }
 }
 test()
