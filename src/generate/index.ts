@@ -2,16 +2,16 @@
  * @Author: zjf 121016171@qq.com
  * @Date: 2024-06-11 15:57:57
  * @LastEditors: peerless_hero peerless_hero@outlook.com
- * @LastEditTime: 2024-06-15 04:09:34
- * @FilePath: \aliyun-sdk\src\build\index.ts
+ * @LastEditTime: 2024-12-22 20:32:27
+ * @FilePath: \aliyun-sdk\src\generate\index.ts
  * @Description:
  *
  */
 import { resolve } from 'node:path'
 import { cwd } from 'node:process'
 import consola from 'consola'
-import fs from 'fs-extra'
 import { renderFile } from 'ejs'
+import fs from 'fs-extra'
 import { type ApiList, generateAPI } from './api.js'
 
 async function generateIndex(apiList: ApiList) {
