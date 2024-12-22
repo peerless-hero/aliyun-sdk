@@ -2,15 +2,15 @@
  * @Author: peerless_hero peerless_hero@outlook.com
  * @Date: 2024-06-08 16:00:58
  * @LastEditors: peerless_hero peerless_hero@outlook.com
- * @LastEditTime: 2024-06-16 22:20:55
+ * @LastEditTime: 2024-12-22 21:34:48
  * @FilePath: \aliyun-sdk\build.config.ts
  * @Description:
  *
  */
-import { defineBuildConfig } from 'unbuild'
+import type { TranspileOptions } from 'typescript'
 import consola from 'consola'
 import fs from 'fs-extra'
-import type { TranspileOptions } from 'typescript'
+import { defineBuildConfig } from 'unbuild'
 import { generatePackages } from './src/generate/index'
 
 const typescript: TranspileOptions = {

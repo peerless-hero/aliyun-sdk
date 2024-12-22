@@ -10,11 +10,11 @@
 import { describe, expect, it } from 'vitest'
 import { renderAPI } from '../src/generate/api'
 
+import ICE from './ICE.json'
+import Oss from './Oss.json'
 import products from './products.json'
 import roa from './roa.json'
 import rpc from './rpc.json'
-import ICE from './ICE.json'
-import Oss from './Oss.json'
 
 describe('generateAPI rpc', () => {
   it('should render API documentation for a product', async () => {
