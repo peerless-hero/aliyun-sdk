@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.0.1
+
+[compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v1.0.0...v1.0.1)
+
+### 🎨 Styles
+
+- Lint ([43adebb](https://github.com/peerless-hero/aliyun-sdk/commit/43adebb))
+
+### ❤️ Contributors
+
+- Peerless_hero ([@peerless-hero](http://github.com/peerless-hero))
+
 ## v1.0.0
 
 [compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.3.0...v1.0.0)

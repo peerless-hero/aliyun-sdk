@@ -1,6 +1,6 @@
 {
   "name": "@peerless-hero/aliyun-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "packageManager": "pnpm@9.15.1",
   "description": "Aliyun sdk for Node.js",
   "author": "peerless_hero <peelrss_hero@outlook.com>",
