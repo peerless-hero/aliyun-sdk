@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.0.0
+
+[compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.3.0...v1.0.0)
+
+### 💅 Refactors
+
+- **client:** 重构客户端请求逻辑 ([b628964](https://github.com/peerless-hero/aliyun-sdk/commit/b628964))
+- 根据请求逻辑变动重构模板 ([d1f0e62](https://github.com/peerless-hero/aliyun-sdk/commit/d1f0e62))
+
+### 🎨 Styles
+
+- 更换导入顺序 ([ac5aada](https://github.com/peerless-hero/aliyun-sdk/commit/ac5aada))
+
+### ❤️ Contributors
+
+- Peerless_hero ([@peerless-hero](http://github.com/peerless-hero))
+
 ## v0.3.0
 
 [compare changes](https://github.com/peerless-hero/aliyun-sdk/compare/v0.1.4...v0.3.0)
